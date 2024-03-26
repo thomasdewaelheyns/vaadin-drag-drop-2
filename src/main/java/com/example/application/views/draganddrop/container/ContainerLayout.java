@@ -71,13 +71,17 @@ public class ContainerLayout extends VerticalLayout implements DragSource<Compon
     }*/
 
     private void handleDropEvent(DropEvent<LayoutSlot> dropEvent){
-        Component dragged = dropEvent.getDragSourceComponent().get();
-        HasComponents draggedParent = (HasComponents)dragged.getParent().get();
-        Component current = dropEvent.getComponent().getChildren().findFirst().get();
-        dropEvent.getComponent().removeAll();
-        dropEvent.getComponent().add(dragged);
-        draggedParent.removeAll();
-        draggedParent.add(current);
+        if(dropEvent.getDragSourceComponent().isPresent()) {
+            Component dragged = dropEvent.getDragSourceComponent().get();
+            HasComponents draggedParent = (HasComponents) dragged.getParent().get();
+            Component current = dropEvent.getComponent().getChildren().findFirst().get();
+            dropEvent.getComponent().removeAll();
+            dropEvent.getComponent().add(dragged);
+            draggedParent.removeAll();
+            draggedParent.add(current);
+        } else {
+            System.out.println("No drag source component available!");
+        }
     }
 
     private void setupDragAndDropListeners(){
